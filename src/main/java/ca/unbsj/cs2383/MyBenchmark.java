@@ -27,7 +27,7 @@ public class MyBenchmark {
 
     @Setup
     public void setup() {
-        if (Master.length == n) {
+   
 
             Master = new Double[n];
             Random r = new Random();
@@ -37,7 +37,7 @@ public class MyBenchmark {
 
             }
 
-        }
+        
     }
 
         @Benchmark

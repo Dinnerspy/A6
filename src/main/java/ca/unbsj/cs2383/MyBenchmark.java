@@ -10,33 +10,50 @@ import java.util.Arrays;
 import java.util.Collections;
 import org.openjdk.jmh.annotations.*;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 
-
+@OutputTimeUnit(TimeUnit.SECONDS)
 @State(Scope.Benchmark)
 public class MyBenchmark {
- 
+ private Double[] Master;
     /**
      *
      */
 
-@State(Scope.Benchmark)
-public static class BenchState {
+        @Param({"1000", "10000", "100000", "1000000",  "10000000", "100000000"})
+        public int n=1000;
+    
+    
+    @Setup
+    public void setup() {
 
-   public Double[] Master;
+        if(Master.length==n){
+
+        }else{
+        Master= new Double[n];
+        Random r = new Random();
+            for(int j=0;j<n;j++){
+            
+                Master[j] = 1.0 + (150.0 - 1.0) * r.nextDouble();
+            
+            
+            }
+        
+        }
+   
+        
+    }
+    
 
 
-}
 
-
-
-    @Param({"25","50","100","200","400","500"})
-public int n;
 
    
-   @Benchmark
-public void PQ (BenchState st) {
-    Double[] Temp =this.FillMaster(st).clone();
+   
+@Benchmark
+public void PQ () {
+    Double[] Temp =Master.clone();
 
  MinPQ<Double> mini;
         mini = new MinPQ();
@@ -46,9 +63,9 @@ public void PQ (BenchState st) {
 }
 
 
-    @Benchmark
-public void Insert (MyBenchmark.BenchState st) {
-    Double[] Temp =this.FillMaster(st).clone();
+@Benchmark
+public void testMethod () {
+    Double[] Temp =Master.clone();
      Collections.shuffle(Arrays.asList(Temp));
         Double[] Insert;
         Insert =Temp.clone();
@@ -56,24 +73,9 @@ public void Insert (MyBenchmark.BenchState st) {
         Insertion.sort(Insert);
 }
 
-    private Double[] FillMaster(BenchState st) {
 
-        if(st.Master.length==n){
-        return st.Master;
-        }else{
-        st.Master= new Double[n];
-        Random r = new Random();
-            for(int j=0;j<n;j++){
-            
-                st.Master[j] = 1.0 + (150.0 - 1.0) * r.nextDouble();
-            
-            
-            }
-        
-        }
-        return st.Master;
-        
+
     }
 
 
-}
+
